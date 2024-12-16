@@ -1,0 +1,47 @@
+Steps to Set Up the retailpulse Database:
+Create the Database:
+CREATE DATABASE retailpulse;
+USE retailpulse;
+
+Create the jobs Table:
+CREATE TABLE jobs (
+id INT AUTO_INCREMENT PRIMARY KEY,
+status VARCHAR(50),
+created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+Create the stores Table:
+CREATE TABLE stores (
+StoreID INT AUTO_INCREMENT PRIMARY KEY,
+StoreName VARCHAR(255) NOT NULL,
+AreaCode VARCHAR(20)
+);
+
+Insert sample data into stores:
+INSERT INTO stores (StoreName, AreaCode) VALUES
+('Store A', '1001'),
+('Store B', '1002'),
+('Store C', '1003');
+
+Create the images Table (with store_id already included):
+CREATE TABLE images (
+id INT AUTO_INCREMENT PRIMARY KEY,
+job_id INT,
+url TEXT,
+perimeter FLOAT,
+store_id INT,
+processed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+FOREIGN KEY (job_id) REFERENCES jobs(id),
+FOREIGN KEY (store_id) REFERENCES stores(StoreID)
+);
+
+Create the job_failures Table:
+CREATE TABLE job_failures (
+id INT AUTO_INCREMENT PRIMARY KEY,
+job_id INT NOT NULL,
+store_id VARCHAR(50) NOT NULL,
+error_message TEXT NOT NULL,
+created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+FOREIGN KEY (job_id) REFERENCES jobs(id)
+);
+
